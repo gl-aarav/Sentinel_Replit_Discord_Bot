@@ -1,3 +1,16 @@
+// Keep-alive server
+const express = require('express');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Bot is running!');
+});
+
+app.listen(3000, () => {
+  console.log('Keep-alive server running on port 3000');
+});
+
+
 require('dotenv').config({ path: './ai_bot.env' });
 const { Client, GatewayIntentBits, PermissionsBitField } = require('discord.js');
 const { OpenAI } = require('openai');
