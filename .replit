@@ -1,0 +1,10 @@
+run = "node discord.js"
+modules = ["nodejs-20"]
+[nix]
+channel = "stable-25_05"
+
+[deployment]
+run = ["sh", "-c", "node discord.js"]
+
+[[ports]]
+localPort = 3000
