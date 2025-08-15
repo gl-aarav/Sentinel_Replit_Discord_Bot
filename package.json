@@ -1,0 +1,15 @@
+{
+  "name": "discord-ai-bot",
+  "version": "1.0.0",
+  "description": "Discord bot with OpenAI integration",
+  "main": "discord.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node discord.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.21.0",
+    "dotenv": "^16.6.1",
+    "openai": "^4.27.0"
+  }
+}
