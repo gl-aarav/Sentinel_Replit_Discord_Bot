@@ -1,4 +1,4 @@
-// Keep-alive server
+// Keep-alive server for Replit
 const express = require('express');
 const app = express();
 
@@ -6,8 +6,9 @@ app.get('/', (req, res) => {
   res.send('Bot is running!');
 });
 
-app.listen(3000, () => {
-  console.log('Keep-alive server running on port 3000');
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Keep-alive server running on port ${PORT}`);
 });
 
 
@@ -88,28 +89,28 @@ client.on('messageCreate', async (message) => {
         message.reply('❌ Failed to delete channel.');
       }
     }
-  
+
   // ==================== !help ====================
   if (command === '!help') {
-	if (!isAdmin(message.member)) 
-	    return message.channel.send('❌ You don’t have permission to use this command.');
+  if (!isAdmin(message.member)) 
+      return message.channel.send('❌ You don’t have permission to use this command.');
 
-	return message.channel.send(`**Available Commands (Founder/Admin only):**
-	\`\`\`
-	!help - Show this help message
-	!addrole <role> @user - Add a role to a user
-	!removerole <role> @user - Remove a role from a user
-	!createrole <name> - Create a new role
-	!deleterole <name> - Delete an existing role
-	!renamerole <oldName> <newName> - Rename a role
-	!kick @user - Kick a user from the server
-	!ban @user - Ban a user from the server
-	!unban <userID> - Unban a user by their ID
-	!deleteall <#channel> - Delete all messages in a channel
-	!createchannel <name> - Create a new text channel
-	!deletechannel <name> - Delete a text channel
-	!chat <message> [#channel] [@user] - Chat via AI in current or specified channel
-	\`\`\``);
+  return message.channel.send(`**Available Commands (Founder/Admin only):**
+  \`\`\`
+  !help - Show this help message
+  !addrole <role> @user - Add a role to a user
+  !removerole <role> @user - Remove a role from a user
+  !createrole <name> - Create a new role
+  !deleterole <name> - Delete an existing role
+  !renamerole <oldName> <newName> - Rename a role
+  !kick @user - Kick a user from the server
+  !ban @user - Ban a user from the server
+  !unban <userID> - Unban a user by their ID
+  !deleteall <#channel> - Delete all messages in a channel
+  !createchannel <name> - Create a new text channel
+  !deletechannel <name> - Delete a text channel
+  !chat <message> [#channel] [@user] - Chat via AI in current or specified channel
+  \`\`\``);
 }
 
 
