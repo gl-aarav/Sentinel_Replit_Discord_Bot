@@ -170,6 +170,22 @@ client.on("messageCreate", async (message) => {
     message.channel.send(`✅ Role "${roleName}" created`);
   }
 
+  if (command === "!verify") {
+    // Only allow Admins or Instructors
+    if (!isAdmin(message.member) && !isInstructor(message.member))
+      return message.channel.send("❌ You don’t have permission to use this command.");
+
+    const member = message.mentions.members.first();
+    if (!member) return message.channel.send("Usage: !verify @user");
+
+    const studentRole = message.guild.roles.cache.find(r => r.name === "Students");
+    if (!studentRole) return message.channel.send("❌ 'Students' role not found.");
+
+    await member.roles.add(studentRole);
+    message.channel.send(`✅ ${member.user.tag} has been verified and given the Students role!`);
+  }
+
+
   if (command === "!deleterole") {
     const role = getRole(message.guild, args.join(" "));
     if (!role) return message.channel.send("Role not found");
