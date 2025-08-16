@@ -310,22 +310,21 @@ client.on("messageCreate", async (message) => {
     message.channel.send(`✅ Unbanned user ID ${userId}`);
   }
 
-  // -------------------- AI Chat --------------------
   if (command === "!chat") {
     const userMention = message.mentions.users.first();
-    const channelMention = getChannel(
-      message.guild,
-      args.find((a) => a.startsWith("#"))
-    );
+    const channelMention = message.mentions.channels.first(); // correct channel mention
+
+    // Remove all mentions from args to get the actual prompt
     const prompt = args
-      .filter((a) => !a.startsWith("<@") && !a.startsWith("<#"))
+      .filter(a => !a.startsWith("<@") && !a.startsWith("<#"))
       .join(" ");
+
     if (!prompt)
       return message.channel.send(
         "Usage: !chat <message> [#channel/channel-name] [@user]"
       );
 
-    let targetChannel = channelMention || message.channel;
+    const targetChannel = channelMention || message.channel;
 
     try {
       const response = await openai.chat.completions.create({
@@ -335,12 +334,14 @@ client.on("messageCreate", async (message) => {
 
       let reply = response.choices[0].message.content;
       if (userMention) reply = `${userMention}, ${reply}`;
-      splitMessage(reply).forEach((chunk) => targetChannel.send(chunk));
+
+      splitMessage(reply).forEach(chunk => targetChannel.send(chunk));
     } catch (err) {
       console.error(err);
       message.channel.send("❌ Error while executing AI chat.");
     }
   }
+
 
   // -------------------- Send DM --------------------
   if (command === "!senddm") {
