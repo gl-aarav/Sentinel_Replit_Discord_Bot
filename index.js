@@ -1,17 +1,20 @@
 const express = require("express");
 const app = express();
 
-// Serve static files (our webpage)
+// Serve the public folder
 app.use(express.static("public"));
 
-// Endpoint to “run” or ping the bot
+// Endpoint to trigger something
 app.get("/run", (req, res) => {
   console.log("Run button clicked!");
-  res.send("✅ Bot run triggered!");
+  res.send("✅ Run triggered!");
 });
 
-// Keep-alive home
-app.get("/", (req, res) => res.sendFile(__dirname + "/public/index.html"));
+// Keep-alive root
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+});
 
+// Use PORT from Replit
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
