@@ -45,7 +45,6 @@ function isInstructor(member) {
   return member.roles.cache.some((r) => r.name === INSTRUCTOR_ROLE);
 }
 
-
 // ==================== Bot Ready ====================
 client.once("ready", () => console.log(`${client.user.tag} is online!`));
 
@@ -68,7 +67,7 @@ function getRole(guild, roleArg) {
   const mentionMatch = roleArg.match(/^<@&(\d+)>$/);
   if (mentionMatch) return guild.roles.cache.get(mentionMatch[1]);
   return guild.roles.cache.find(
-    (r) => r.name.toLowerCase() === roleArg.toLowerCase()
+    (r) => r.name.toLowerCase() === roleArg.toLowerCase(),
   );
 }
 
@@ -79,7 +78,7 @@ function getMember(guild, userArg) {
   return guild.members.cache.find(
     (m) =>
       m.user.username.toLowerCase() === userArg.toLowerCase() ||
-      (m.nickname && m.nickname.toLowerCase() === userArg.toLowerCase())
+      (m.nickname && m.nickname.toLowerCase() === userArg.toLowerCase()),
   );
 }
 
@@ -88,7 +87,7 @@ function getChannel(guild, channelArg) {
   const mentionMatch = channelArg.match(/^<#(\d+)>$/);
   if (mentionMatch) return guild.channels.cache.get(mentionMatch[1]);
   return guild.channels.cache.find(
-    (c) => c.name.toLowerCase() === channelArg.toLowerCase()
+    (c) => c.name.toLowerCase() === channelArg.toLowerCase(),
   );
 }
 
@@ -104,7 +103,6 @@ client.on("messageCreate", async (message) => {
   function isInstructor(member) {
     return member.roles.cache.some((r) => r.name === INSTRUCTOR_ROLE);
   }
-
 
   // -------------------- Founder/Admin commands --------------------
   if (!isAdmin(message.member)) return;
@@ -173,18 +171,24 @@ client.on("messageCreate", async (message) => {
   if (command === "!verify") {
     // Only allow Admins or Instructors
     if (!isAdmin(message.member) && !isInstructor(message.member))
-      return message.channel.send("❌ You don’t have permission to use this command.");
+      return message.channel.send(
+        "❌ You don’t have permission to use this command.",
+      );
 
     const member = message.mentions.members.first();
     if (!member) return message.channel.send("Usage: !verify @user");
 
-    const studentRole = message.guild.roles.cache.find(r => r.name === "Students");
-    if (!studentRole) return message.channel.send("❌ 'Students' role not found.");
+    const studentRole = message.guild.roles.cache.find(
+      (r) => r.name === "Students",
+    );
+    if (!studentRole)
+      return message.channel.send("❌ 'Students' role not found.");
 
     await member.roles.add(studentRole);
-    message.channel.send(`✅ ${member.user.tag} has been verified and given the Students role!`);
+    message.channel.send(
+      `✅ ${member.user.tag} has been verified and given the Students role!`,
+    );
   }
-
 
   if (command === "!deleterole") {
     const role = getRole(message.guild, args.join(" "));
@@ -250,7 +254,7 @@ client.on("messageCreate", async (message) => {
     if (!user) return message.reply("Usage: !createprivatechannel @user");
 
     const adminRole = message.guild.roles.cache.find(
-      (r) => r.name === ADMIN_ROLE
+      (r) => r.name === ADMIN_ROLE,
     );
     const overwrites = [
       { id: message.guild.id, deny: [PermissionsBitField.Flags.ViewChannel] },
@@ -316,12 +320,12 @@ client.on("messageCreate", async (message) => {
 
     // Remove all mentions from args to get the actual prompt
     const prompt = args
-      .filter(a => !a.startsWith("<@") && !a.startsWith("<#"))
+      .filter((a) => !a.startsWith("<@") && !a.startsWith("<#"))
       .join(" ");
 
     if (!prompt)
       return message.channel.send(
-        "Usage: !chat <message> [#channel/channel-name] [@user]"
+        "Usage: !chat <message> [#channel/channel-name] [@user]",
       );
 
     const targetChannel = channelMention || message.channel;
@@ -335,13 +339,12 @@ client.on("messageCreate", async (message) => {
       let reply = response.choices[0].message.content;
       if (userMention) reply = `${userMention}, ${reply}`;
 
-      splitMessage(reply).forEach(chunk => targetChannel.send(chunk));
+      splitMessage(reply).forEach((chunk) => targetChannel.send(chunk));
     } catch (err) {
       console.error(err);
       message.channel.send("❌ Error while executing AI chat.");
     }
   }
-
 
   // -------------------- Send DM --------------------
   if (command === "!senddm") {
@@ -356,7 +359,7 @@ client.on("messageCreate", async (message) => {
     } catch (err) {
       console.error(err);
       message.channel.send(
-        `❌ Could not send DM to ${member.user.tag}. They might have DMs disabled.`
+        `❌ Could not send DM to ${member.user.tag}. They might have DMs disabled.`,
       );
     }
   }
